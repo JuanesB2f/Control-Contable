@@ -48,12 +48,14 @@ type SalesViewProps = {
   products: Product[]
   customers: CustomerOption[] | null
   openNew: boolean
+  /** Sale to open on arrival (from a notification), shown inside "Por cobrar". */
+  focusSaleId: string | null
   /** Local calendar days computed on the server, to label "Hoy" and "Ayer". */
   todayKey: string
   yesterdayKey: string
 }
 
-export function SalesView({ sales, receivables, products, customers, openNew, todayKey, yesterdayKey }: SalesViewProps) {
+export function SalesView({ sales, receivables, products, customers, openNew, focusSaleId, todayKey, yesterdayKey }: SalesViewProps) {
   const { organization } = useOrg()
   const can = useCan()
   const format = useOrgFormat()
@@ -61,13 +63,21 @@ export function SalesView({ sales, receivables, products, customers, openNew, to
   const pathname = usePathname()
   const canCreate = can("sales.create")
   const [query, setQuery] = useState("")
-  const [status, setStatus] = useState<StatusFilter>("all")
-  const [selectedId, setSelectedId] = useState<string | null>(null)
+  const [status, setStatus] = useState<StatusFilter>(focusSaleId ? "pending" : "all")
+  const [selectedId, setSelectedId] = useState<string | null>(focusSaleId)
   const [newOpen, setNewOpen] = useState(openNew && canCreate)
   const [lastOpenNew, setLastOpenNew] = useState(openNew)
   if (openNew !== lastOpenNew) {
     setLastOpenNew(openNew)
     if (openNew && canCreate) setNewOpen(true)
+  }
+  const [lastFocusSaleId, setLastFocusSaleId] = useState(focusSaleId)
+  if (focusSaleId !== lastFocusSaleId) {
+    setLastFocusSaleId(focusSaleId)
+    if (focusSaleId) {
+      setStatus("pending")
+      setSelectedId(focusSaleId)
+    }
   }
 
   const pendingView = status === "pending"
@@ -272,7 +282,9 @@ export function SalesView({ sales, receivables, products, customers, openNew, to
       <SaleDetailSheet
         sale={selected}
         onOpenChange={(open) => {
-          if (!open) setSelectedId(null)
+          if (open) return
+          setSelectedId(null)
+          if (focusSaleId) router.replace(pathname, { scroll: false })
         }}
       />
       {newSaleDialog}

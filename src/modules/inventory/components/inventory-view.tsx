@@ -133,11 +133,12 @@ export function InventoryView({ products }: { products: Product[] }) {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="hidden h-8 sm:inline-flex"
+                        className="h-8 max-sm:size-10 max-sm:rounded-xl max-sm:px-0"
                         onClick={() => setEntry({ product, mode: "purchase" })}
+                        aria-label={`Registrar compra de ${product.name}`}
                       >
-                        <PackagePlus data-icon="inline-start" />
-                        Compra
+                        <PackagePlus data-icon="inline-start" className="max-sm:text-primary" />
+                        <span className="max-sm:sr-only">Compra</span>
                       </Button>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>

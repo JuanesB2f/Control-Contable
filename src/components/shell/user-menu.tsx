@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronsUpDown, LogOut, Monitor, Moon, Sun, UserRound } from "lucide-react"
+import { ChevronsUpDown, LogOut, Sun, UserRound } from "lucide-react"
 import { useTheme } from "next-themes"
 import Link from "next/link"
 import { useTransition } from "react"
@@ -20,16 +20,11 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { THEME_OPTIONS } from "@/components/theme/theme-options"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
 import { routes } from "@/config/routes"
 import { useOrg } from "@/modules/access/components/org-provider"
 import { signOut } from "@/modules/auth/application/actions"
-
-const THEMES = [
-  { value: "light", label: "Clara", icon: Sun },
-  { value: "dark", label: "Oscura", icon: Moon },
-  { value: "system", label: "Automática", icon: Monitor },
-] as const
 
 export function UserMenu() {
   const { user, organization } = useOrg()
@@ -80,7 +75,7 @@ export function UserMenu() {
                 </DropdownMenuSubTrigger>
                 <DropdownMenuSubContent className="rounded-xl">
                   <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
-                    {THEMES.map((option) => (
+                    {THEME_OPTIONS.map((option) => (
                       <DropdownMenuRadioItem key={option.value} value={option.value}>
                         <option.icon />
                         {option.label}

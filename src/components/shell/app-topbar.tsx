@@ -25,7 +25,7 @@ function useSectionTitle() {
   return match?.title ?? organization.name
 }
 
-export function AppTopbar() {
+export function AppTopbar({ notifications }: { notifications: React.ReactNode }) {
   const title = useSectionTitle()
   const palette = useCommandPalette()
   const isApplePlatform = useSyncExternalStore(
@@ -35,11 +35,12 @@ export function AppTopbar() {
   )
 
   return (
-    <header className="glass sticky top-0 z-20 flex h-13 shrink-0 items-center gap-2 border-b border-border/60 px-3 md:rounded-t-xl md:px-4">
-      <SidebarTrigger className="-ml-1 text-muted-foreground" />
-      <Separator orientation="vertical" className="mr-1 data-[orientation=vertical]:h-4" />
-      <p className="truncate text-sm font-medium">{title}</p>
-      <div className="ml-auto flex items-center gap-2">
+    <header className="glass sticky top-0 z-20 flex h-13 shrink-0 items-center gap-2 border-b border-border/60 px-4 md:rounded-t-xl">
+      <SidebarTrigger className="-ml-1 text-muted-foreground max-md:hidden" />
+      <Separator orientation="vertical" className="mr-1 data-[orientation=vertical]:h-4 max-md:hidden" />
+      <p className="truncate text-[17px] font-semibold tracking-tight md:text-sm md:font-medium md:tracking-normal">{title}</p>
+      <div className="ml-auto flex items-center gap-1 sm:gap-2">
+        {notifications}
         <Button
           variant="outline"
           onClick={palette.open}

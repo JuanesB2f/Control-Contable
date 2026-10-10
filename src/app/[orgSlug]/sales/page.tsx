@@ -116,6 +116,7 @@ async function Sales({ params, searchParams }: Pick<SalesPageProps, "params" | "
         products={products}
         customers={customers?.map((customer) => ({ id: customer.id, name: customer.name, phone: customer.phone })) ?? null}
         openNew={query.new === "1"}
+        focusSaleId={typeof query.sale === "string" ? query.sale : null}
         todayKey={localDateKey(now, organization.timezone)}
         yesterdayKey={localDateKey(new Date(now.getTime() - DAY_MS), organization.timezone)}
       />

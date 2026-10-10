@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { createMoneyFormatter } from "@/lib/money"
 import { can, requireOrgContext } from "@/modules/access/application/org-context"
 import { getStockMovements } from "@/modules/inventory/application/queries"
+import { AddStockButton } from "@/modules/inventory/components/add-stock-button"
 import { InventoryView } from "@/modules/inventory/components/inventory-view"
 import { MovementsList } from "@/modules/inventory/components/movements-list"
 import { inventoryValuation, stockStatus } from "@/modules/inventory/domain/stock"
@@ -29,12 +30,12 @@ export default function InventoryPage({ params }: PageProps<"/[orgSlug]/inventor
 async function Inventory({ params }: Pick<PageProps<"/[orgSlug]/inventory">, "params">) {
   const { orgSlug } = await params
   const context = await requireOrgContext(orgSlug)
-  const header = <PageHeader title="Inventario" description="Cuánto tienes, cuánto te dura y cuánto dinero hay en tus estantes." />
+  const description = "Cuánto tienes, cuánto te dura y cuánto dinero hay en tus estantes."
 
   if (!can(context, "inventory.read")) {
     return (
       <PageContainer>
-        {header}
+        <PageHeader title="Inventario" description={description} />
         <Card>
           <NoAccess />
         </Card>
@@ -51,7 +52,7 @@ async function Inventory({ params }: Pick<PageProps<"/[orgSlug]/inventory">, "pa
 
   return (
     <PageContainer>
-      {header}
+      <PageHeader title="Inventario" description={description} actions={<AddStockButton products={products} />} />
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4 lg:gap-4">
         {seesCosts ? (
           <KpiCard label="Invertido en inventario" value={format.money(valuation.costValue)} icon={Coins} hint="Al costo promedio" />

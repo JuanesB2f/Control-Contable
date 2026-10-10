@@ -8,7 +8,7 @@ export const DEFAULT_CREDIT_DAYS = 15
 export const CREDIT_TERM_OPTIONS = [8, 15, 30] as const
 
 /** Balances due within this many days are flagged as coming up soon. */
-const SOON_DAYS = 3
+export const SOON_DAYS = 3
 
 export type DueStatus = "overdue" | "today" | "soon" | "upcoming" | "none"
 

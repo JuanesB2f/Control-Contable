@@ -4,6 +4,8 @@ import { Suspense } from "react"
 import { AppShell } from "@/components/shell/app-shell"
 import { AppShellSkeleton } from "@/components/shell/app-shell-skeleton"
 import { requireOrgContext } from "@/modules/access/application/org-context"
+import { NotificationBell } from "@/modules/notifications/components/notification-bell"
+import { NotificationsLoader } from "@/modules/notifications/components/notifications-loader"
 import { getMyOrganizations } from "@/modules/organizations/application/queries"
 
 async function OrgShell({ params, children }: Pick<LayoutProps<"/[orgSlug]">, "params" | "children">) {
@@ -18,6 +20,11 @@ async function OrgShell({ params, children }: Pick<LayoutProps<"/[orgSlug]">, "p
     <AppShell
       context={{ ...context, organizations }}
       defaultSidebarOpen={cookieStore.get("sidebar_state")?.value !== "false"}
+      notifications={
+        <Suspense fallback={<NotificationBell state="loading" />}>
+          <NotificationsLoader context={context} />
+        </Suspense>
+      }
     >
       {children}
     </AppShell>
