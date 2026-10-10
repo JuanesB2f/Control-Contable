@@ -9,6 +9,11 @@ export const routes = {
   invite: (token: string) => `/invite/${token}`,
   org: {
     dashboard: (slug: string) => `/${slug}/dashboard`,
+    sales: (slug: string) => `/${slug}/sales`,
+    customers: (slug: string) => `/${slug}/customers`,
+    products: (slug: string) => `/${slug}/products`,
+    inventory: (slug: string) => `/${slug}/inventory`,
+    finance: (slug: string) => `/${slug}/finance`,
     settings: (slug: string) => `/${slug}/settings`,
     members: (slug: string) => `/${slug}/settings/members`,
     profile: (slug: string) => `/${slug}/settings/profile`,

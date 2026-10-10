@@ -24,13 +24,14 @@ export const metadata: Metadata = {
     template: `%s · ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  appleWebApp: { capable: true, title: siteConfig.name, statusBarStyle: "default" },
 }
 
 export const viewport: Viewport = {
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f2f2f5" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f0f11" },
+    { media: "(prefers-color-scheme: light)", color: "#f4f9f4" },
+    { media: "(prefers-color-scheme: dark)", color: "#0d110d" },
   ],
 }
 

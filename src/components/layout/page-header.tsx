@@ -1,3 +1,4 @@
+import { Reveal } from "@/components/motion/reveal"
 import { cn } from "@/lib/utils"
 
 type PageHeaderProps = {
@@ -14,16 +15,16 @@ export function PageHeader({ title, description, actions, className }: PageHeade
         <h1 className="text-2xl font-semibold tracking-tight text-balance sm:text-[28px]">{title}</h1>
         {description ? <p className="text-[15px] text-muted-foreground text-pretty">{description}</p> : null}
       </div>
-      {actions ? <div className="flex shrink-0 items-center gap-2">{actions}</div> : null}
+      {actions ? <div className="flex w-full items-center gap-2 sm:w-auto sm:shrink-0">{actions}</div> : null}
     </header>
   )
 }
 
-/** Standard page container: comfortable reading width and consistent vertical rhythm. */
+/** Standard page container: comfortable reading width, consistent vertical rhythm and a gentle entrance. */
 export function PageContainer({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <div className={cn("mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-6 sm:px-8 sm:py-10", className)}>
+    <Reveal className={cn("mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-5 sm:gap-8 sm:px-8 sm:py-10", className)}>
       {children}
-    </div>
+    </Reveal>
   )
 }

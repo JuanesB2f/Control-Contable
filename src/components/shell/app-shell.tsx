@@ -20,9 +20,9 @@ export function AppShell({ context, defaultSidebarOpen, children }: AppShellProp
       <SidebarProvider defaultOpen={defaultSidebarOpen}>
         <CommandPaletteProvider>
           <AppSidebar />
-          <SidebarInset className="min-w-0 md:border md:border-border/60">
+          <SidebarInset className="min-w-0">
             <AppTopbar />
-            <main className="flex-1 pb-24 md:pb-0">{children}</main>
+            <main className="flex-1 pb-28 md:pb-0">{children}</main>
           </SidebarInset>
           <MobileTabBar />
         </CommandPaletteProvider>

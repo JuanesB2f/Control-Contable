@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
+import { AppLogo } from "@/components/brand/app-logo"
 import {
   Sidebar,
   SidebarContent,
@@ -12,13 +13,13 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuBadge,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
   useSidebar,
 } from "@/components/ui/sidebar"
 import { navigation, settingsNavItem, type NavItem } from "@/config/navigation"
+import { siteConfig } from "@/config/site"
 import { useCan, useOrg } from "@/modules/access/components/org-provider"
 
 import { OrgSwitcher } from "./org-switcher"
@@ -28,25 +29,6 @@ function NavLink({ item }: { item: NavItem }) {
   const pathname = usePathname()
   const { organization } = useOrg()
   const { setOpenMobile } = useSidebar()
-
-  if (item.status === "soon") {
-    return (
-      <SidebarMenuItem>
-        <SidebarMenuButton
-          aria-disabled
-          tooltip={`${item.title} · Próximamente`}
-          className="cursor-default text-sidebar-foreground/45 hover:bg-transparent hover:text-sidebar-foreground/45 active:bg-transparent"
-        >
-          <item.icon />
-          <span>{item.title}</span>
-        </SidebarMenuButton>
-        <SidebarMenuBadge className="rounded-full bg-sidebar-accent px-1.5 text-[10px] font-medium text-muted-foreground">
-          Pronto
-        </SidebarMenuBadge>
-      </SidebarMenuItem>
-    )
-  }
-
   const href = item.href(organization.slug)
   const isActive = pathname === href || pathname.startsWith(`${href}/`)
 
@@ -77,6 +59,10 @@ export function AppSidebar() {
   return (
     <Sidebar variant="inset" collapsible="icon">
       <SidebarHeader className="pt-3">
+        <div className="flex items-center gap-2 px-2 pb-1 group-data-[collapsible=icon]:hidden">
+          <AppLogo className="size-6" />
+          <span className="text-[15px] font-semibold tracking-tight text-brand">{siteConfig.name}</span>
+        </div>
         <OrgSwitcher />
       </SidebarHeader>
       <SidebarContent>

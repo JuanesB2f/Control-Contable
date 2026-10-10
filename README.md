@@ -1,4 +1,4 @@
-# Control Contable
+# VitaEsme
 
 Plataforma SaaS multi-negocio para gestionar ventas, clientes, productos, inventario y finanzas. Diseño inspirado en macOS / iOS.
 
@@ -10,11 +10,21 @@ Plataforma SaaS multi-negocio para gestionar ventas, clientes, productos, invent
 
 - Registro, inicio de sesión, verificación de correo y recuperación de contraseña.
 - Negocios (organizaciones) con dirección propia: `/{negocio}/dashboard`.
-- Equipo: invitaciones por enlace o correo, roles Propietario / Administrador / Empleado, cambio de rol y retiro.
+- Miembros (Configuración → Miembros): invitaciones por enlace o correo, roles Propietario / Administrador / Empleado, cambio de rol y retiro.
 - Seguridad en base de datos: RLS en todas las tablas, permisos por rol en `role_permissions`, RPCs `security definer` y registro de auditoría inmutable.
-- Shell estilo macOS: barra lateral, paleta de comandos (⌘K / Ctrl K), barra de pestañas en móvil, modo claro/oscuro.
+- Shell estilo macOS / iOS: tarjetas de vidrio translúcido, barra lateral, paleta de comandos (⌘K / Ctrl K), barra flotante en móvil con botón central para vender, diálogos tipo hoja en el celular, modo claro/oscuro e instalable en la pantalla de inicio.
+- Gráficas con Chart.js y animaciones con GSAP (respetan "reducir movimiento" del sistema).
 
-Los módulos de Ventas, Clientes, Productos, Inventario, Finanzas, Intelligence, Reportes y Social Hub aparecen como "Pronto" en la barra lateral.
+**Fase 2 — Operación comercial** (completa)
+
+- Productos: costo y precio de venta con simulador de margen y precio sugerido.
+- Inventario: compras con costo promedio ponderado, ajustes por conteo, cobertura en días y valor en estantes.
+- Ventas: punto de venta con carrito, cliente, descuento, cambio en efectivo y ganancia en vivo; anulación con reposición de stock.
+- Clientes: segmentos automáticos (Campeón, Frecuente, Nuevo, En riesgo…), podio de quienes más compran y contacto por WhatsApp.
+- Finanzas: estado de resultados, flujo de caja, punto de equilibrio y gastos por categoría.
+- Inicio: cuánto vendiste con su gráfica, ganancia y número de ventas, tres consejos en frases, lo más vendido, cómo te pagan y qué reabastecer.
+
+Los costos solo los ven quienes tienen el permiso `costs.read` (Propietario y Administrador).
 
 ## Puesta en marcha
 
@@ -29,13 +39,15 @@ Los módulos de Ventas, Clientes, Productos, Inventario, Finanzas, Intelligence,
    npm run db:push
    ```
 
-3. En **Authentication → URL Configuration** define:
-   - Site URL: `http://localhost:3000` (o tu dominio en producción).
-   - Redirect URLs: `http://localhost:3000/**` y `https://tu-dominio.com/**`.
-4. En **Authentication → Email Templates** usa enlaces con `token_hash`, para que funcionen aunque se abran en otro navegador:
-   - **Confirm signup:** `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=email&next=/onboarding`
-   - **Reset password:** `{{ .SiteURL }}/auth/confirm?token_hash={{ .TokenHash }}&type=recovery&next=/reset-password`
-5. (Recomendado) En **Authentication → SMTP Settings** configura Resend como SMTP para que los correos de autenticación salgan desde tu dominio.
+3. Sincroniza la configuración de Auth (URLs de redirección y política de contraseñas) desde `supabase/config.toml`:
+
+   ```bash
+   npx supabase config push
+   ```
+
+4. Correos de autenticación:
+   - Con el SMTP por defecto de Supabase (plan gratuito) se usan las plantillas estándar: funcionan, pero el enlace de confirmación debe abrirse en el mismo navegador donde te registraste, y Supabase limita el envío a unos pocos correos por hora.
+   - Para producción configura Resend en `[auth.email.smtp]` y activa las plantillas en español de `supabase/templates/` (bloques comentados en `config.toml`). Usan `token_hash`, así que funcionan desde cualquier navegador.
 
 ### 2. Variables de entorno
 
@@ -69,26 +81,39 @@ Abre [http://localhost:3000](http://localhost:3000), crea una cuenta y luego tu 
 
 ## Arquitectura
 
-```
-src/
-  app/                 Rutas (App Router). Solo composición: sin lógica de negocio.
-    (minimal)/         Login, registro, onboarding, invitaciones.
-    [orgSlug]/         Área privada de cada negocio.
-  modules/<módulo>/
-    domain/            Tipos, esquemas Zod y reglas puras (testeables).
-    application/       Server Actions y consultas; autorizan cada operación.
-    infrastructure/    Acceso a Supabase y servicios externos.
-    components/        UI del módulo.
-  components/          Design system y shell compartidos.
-  lib/                 Utilidades transversales (Supabase, env, errores, fechas).
-supabase/
-  migrations/          Esquema, RLS, permisos y RPCs.
-  tests/database/      Pruebas pgTAP de aislamiento entre negocios.
+Estructura modular por dominio (`src/modules/<módulo>/{domain,application,infrastructure,components}`). El árbol completo de carpetas, la anatomía de un módulo y las reglas de seguridad están en [EXPLAINED.md](EXPLAINED.md).
+
+## Despliegue
+
+### Vercel
+
+Vercel compila desde el código fuente (no usa el `Dockerfile`):
+
+1. Importa el repositorio en Vercel (framework: Next.js, sin cambios en build/output).
+2. En **Settings → Environment Variables** agrega las variables de `.env.example`. `NEXT_PUBLIC_SITE_URL` debe ser el dominio de producción.
+3. En Supabase → Authentication → URL Configuration agrega ese dominio a **Site URL** y **Redirect URLs** (`https://tu-dominio/auth/confirm`).
+
+### Docker
+
+[Dockerfile](Dockerfile) multi-etapa con la salida `standalone` de Next.js: la imagen final solo contiene el servidor mínimo y corre como usuario sin privilegios.
+
+Las variables `NEXT_PUBLIC_*` se incrustan en el JavaScript durante el build, por eso se pasan como `--build-arg`; las de servidor (`RESEND_API_KEY`, `EMAIL_FROM`) se pasan al ejecutar.
+
+Con Docker Compose (lee los valores de `.env.local`):
+
+```bash
+docker compose --env-file .env.local up --build
 ```
 
-Reglas clave:
+Sin Compose:
 
-- **Aislamiento multi-negocio en la base de datos:** toda tabla de negocio lleva `organization_id` y políticas RLS basadas en `private.is_member` / `private.has_permission`.
-- **Autorización por permisos, no por rol:** el código pregunta `can(context, "members.manage")`; los roles se mapean a permisos en `role_permissions`.
-- **Cada Server Action revalida sesión, membresía y permiso** (`authorizeOrgAction`) y valida la entrada con Zod; la UI solo oculta lo que no puedes hacer.
-- **Auditoría:** las operaciones sensibles escriben en `audit_logs` desde la base de datos; nadie puede editar ni borrar ese registro desde la app.
+```bash
+docker build -t vitaesme \
+  --build-arg NEXT_PUBLIC_SUPABASE_URL=https://tu-proyecto.supabase.co \
+  --build-arg NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_xxx \
+  --build-arg NEXT_PUBLIC_SITE_URL=https://tu-dominio .
+
+docker run -p 3000:3000 --env-file .env.local vitaesme
+```
+
+La imagen sirve en cualquier proveedor que ejecute contenedores (Railway, Fly.io, Render, Google Cloud Run, un VPS).

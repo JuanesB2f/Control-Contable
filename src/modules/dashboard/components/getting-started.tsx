@@ -1,7 +1,6 @@
 import { ArrowRight, Check } from "lucide-react"
 import Link from "next/link"
 
-import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
 
@@ -12,7 +11,6 @@ export type GettingStartedStep = {
   done: boolean
   href?: string
   cta?: string
-  comingSoon?: boolean
 }
 
 export function GettingStarted({ steps }: { steps: GettingStartedStep[] }) {
@@ -64,11 +62,7 @@ export function GettingStarted({ steps }: { steps: GettingStartedStep[] }) {
                 </p>
                 <p className="text-[13px] text-muted-foreground">{step.description}</p>
               </div>
-              {step.comingSoon ? (
-                <Badge variant="secondary" className="font-normal text-muted-foreground">
-                  Pronto
-                </Badge>
-              ) : !step.done && step.href ? (
+              {!step.done && step.href ? (
                 <Link
                   href={step.href}
                   className="flex shrink-0 items-center gap-1 text-[13px] font-medium text-primary hover:underline"

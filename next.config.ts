@@ -1,9 +1,20 @@
 import type { NextConfig } from "next";
 
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Only product photos from this project's public bucket go through the image optimizer.
+  images: {
+    remotePatterns: supabaseUrl ? [new URL("/storage/v1/object/public/product-images/**", supabaseUrl)] : [],
+  },
+  // Minimal self-contained server for the Docker image; Vercel ignores it and uses its own output.
+  output: "standalone",
   cacheComponents: true,
   partialPrefetching: true,
+  // Server Action arguments include passwords and invitation tokens; keep them out of dev logs.
+  logging: {
+    serverFunctions: false,
+  },
   turbopack: {
     rules: {
       "*.css": {

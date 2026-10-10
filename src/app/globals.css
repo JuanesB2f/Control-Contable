@@ -26,6 +26,8 @@
   --color-destructive: var(--destructive);
   --color-success: var(--success);
   --color-warning: var(--warning);
+  --color-brand: var(--brand);
+  --color-brand-light: var(--brand-light);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
@@ -51,88 +53,106 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  --shadow-card: 0 0 0 1px var(--hairline), 0 1px 2px rgb(0 0 0 / 0.04), 0 2px 8px -2px rgb(0 0 0 / 0.04);
+  --shadow-card: inset 0 1px 0 0 var(--glass-highlight), 0 0 0 1px var(--hairline), 0 1px 2px rgb(0 0 0 / 0.03), 0 10px 30px -14px var(--glass-shadow);
 }
 
 :root {
   --radius: 0.625rem;
-  --hairline: rgb(0 0 0 / 0.06);
+  --hairline: rgb(20 60 25 / 0.07);
+  --glass: rgb(255 255 255 / 0.62);
+  --glass-strong: rgb(255 255 255 / 0.78);
+  --glass-highlight: rgb(255 255 255 / 0.8);
+  --glass-shadow: rgb(20 60 25 / 0.18);
+  --backdrop-1: rgb(129 199 132 / 0.35);
+  --backdrop-2: rgb(251 192 45 / 0.16);
+  --backdrop-3: rgb(76 175 80 / 0.22);
 
-  --background: #fbfbfd;
-  --foreground: #1d1d1f;
+  --background: #ffffff;
+  --foreground: #1c241d;
   --card: #ffffff;
-  --card-foreground: #1d1d1f;
-  --popover: rgb(255 255 255 / 0.86);
-  --popover-foreground: #1d1d1f;
-  --primary: #0071e3;
+  --card-foreground: #1c241d;
+  --popover: rgb(255 255 255 / 0.88);
+  --popover-foreground: #1c241d;
+  --primary: #2e7d32;
   --primary-foreground: #ffffff;
-  --secondary: #ededf0;
-  --secondary-foreground: #1d1d1f;
-  --muted: #f2f2f5;
-  --muted-foreground: #6e6e73;
-  --accent: #ececf0;
-  --accent-foreground: #1d1d1f;
-  --destructive: #e5352b;
-  --success: #1f9d55;
-  --warning: #c77700;
-  --border: rgb(0 0 0 / 0.08);
-  --input: rgb(0 0 0 / 0.12);
-  --ring: #0071e3;
+  --secondary: #edf5ed;
+  --secondary-foreground: #1b5e20;
+  --muted: #f3f7f3;
+  --muted-foreground: #66706a;
+  --accent: #e8f3e8;
+  --accent-foreground: #1b5e20;
+  --destructive: #d93025;
+  --success: #43a047;
+  --warning: #d48c00;
+  --border: rgb(20 60 25 / 0.09);
+  --input: rgb(20 60 25 / 0.14);
+  --ring: #43a047;
+  --brand: #1b5e20;
+  --brand-light: #4caf50;
 
-  --chart-1: #0071e3;
-  --chart-2: #34c759;
-  --chart-3: #ff9f0a;
-  --chart-4: #af52de;
-  --chart-5: #8e8e93;
+  --chart-1: #2e7d32;
+  --chart-2: #81c784;
+  --chart-3: #fbc02d;
+  --chart-4: #1b5e20;
+  --chart-5: #a5b8a7;
 
-  --sidebar: #f2f2f5;
-  --sidebar-foreground: #1d1d1f;
-  --sidebar-primary: #0071e3;
+  --sidebar: #f4f9f4;
+  --sidebar-foreground: #1c241d;
+  --sidebar-primary: #2e7d32;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: rgb(0 0 0 / 0.06);
-  --sidebar-accent-foreground: #1d1d1f;
-  --sidebar-border: rgb(0 0 0 / 0.06);
-  --sidebar-ring: #0071e3;
+  --sidebar-accent: rgb(46 125 50 / 0.1);
+  --sidebar-accent-foreground: #1b5e20;
+  --sidebar-border: rgb(20 60 25 / 0.07);
+  --sidebar-ring: #43a047;
 }
 
 .dark {
   --hairline: rgb(255 255 255 / 0.07);
+  --glass: rgb(30 37 30 / 0.55);
+  --glass-strong: rgb(30 37 30 / 0.72);
+  --glass-highlight: rgb(255 255 255 / 0.06);
+  --glass-shadow: rgb(0 0 0 / 0.5);
+  --backdrop-1: rgb(67 160 71 / 0.22);
+  --backdrop-2: rgb(251 192 45 / 0.07);
+  --backdrop-3: rgb(27 94 32 / 0.35);
 
-  --background: #161618;
-  --foreground: #f5f5f7;
-  --card: #1e1e21;
-  --card-foreground: #f5f5f7;
-  --popover: rgb(40 40 44 / 0.86);
-  --popover-foreground: #f5f5f7;
-  --primary: #0a84ff;
+  --background: #121612;
+  --foreground: #f2f6f2;
+  --card: #1a1f1a;
+  --card-foreground: #f2f6f2;
+  --popover: rgb(34 41 34 / 0.88);
+  --popover-foreground: #f2f6f2;
+  --primary: #43a047;
   --primary-foreground: #ffffff;
-  --secondary: #2c2c30;
-  --secondary-foreground: #f5f5f7;
-  --muted: #26262a;
-  --muted-foreground: #98989f;
-  --accent: #2c2c30;
-  --accent-foreground: #f5f5f7;
-  --destructive: #ff453a;
-  --success: #30d158;
-  --warning: #ffb340;
+  --secondary: #243024;
+  --secondary-foreground: #e3f1e3;
+  --muted: #1f261f;
+  --muted-foreground: #9aa69c;
+  --accent: #263326;
+  --accent-foreground: #e3f1e3;
+  --destructive: #ff5a4f;
+  --success: #66bb6a;
+  --warning: #fbc02d;
   --border: rgb(255 255 255 / 0.08);
-  --input: rgb(255 255 255 / 0.12);
-  --ring: #0a84ff;
+  --input: rgb(255 255 255 / 0.13);
+  --ring: #66bb6a;
+  --brand: #81c784;
+  --brand-light: #66bb6a;
 
-  --chart-1: #0a84ff;
-  --chart-2: #30d158;
-  --chart-3: #ffb340;
-  --chart-4: #bf5af2;
-  --chart-5: #8e8e93;
+  --chart-1: #66bb6a;
+  --chart-2: #a5d6a7;
+  --chart-3: #fbc02d;
+  --chart-4: #43a047;
+  --chart-5: #7d8a7f;
 
-  --sidebar: #0f0f11;
-  --sidebar-foreground: #f5f5f7;
-  --sidebar-primary: #0a84ff;
+  --sidebar: #0d110d;
+  --sidebar-foreground: #f2f6f2;
+  --sidebar-primary: #43a047;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: rgb(255 255 255 / 0.07);
-  --sidebar-accent-foreground: #f5f5f7;
+  --sidebar-accent: rgb(102 187 106 / 0.12);
+  --sidebar-accent-foreground: #e3f1e3;
   --sidebar-border: rgb(255 255 255 / 0.06);
-  --sidebar-ring: #0a84ff;
+  --sidebar-ring: #66bb6a;
 }
 
 @layer base {
@@ -148,6 +168,18 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+  /* Soft green light behind the translucent cards; a fixed layer because iOS ignores background-attachment: fixed. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(48rem 34rem at -8% -12%, var(--backdrop-1), transparent 65%),
+      radial-gradient(40rem 30rem at 108% 6%, var(--backdrop-2), transparent 65%),
+      radial-gradient(52rem 36rem at 60% 115%, var(--backdrop-3), transparent 65%);
   }
   ::selection {
     background: color-mix(in oklab, var(--primary) 22%, transparent);
@@ -174,10 +206,32 @@
   }
 
   .glass {
-    background: color-mix(in oklab, var(--background) 72%, transparent);
+    background: var(--glass-strong);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
   }
+}
+
+/* macOS/iOS frosted card: translucent fill, top highlight, hairline and soft shadow. */
+@utility glass-card {
+  background: var(--glass);
+  backdrop-filter: blur(22px) saturate(170%);
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  box-shadow: var(--shadow-card);
+}
+
+@keyframes reveal-fallback {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Hidden until <Reveal> animates it in; the delay must match FALLBACK_DELAY_MS in reveal.tsx. */
+[data-reveal]:not([data-revealed]) {
+  animation: reveal-fallback 0.3s ease-out 0.6s both;
 }
 
 @media (prefers-reduced-motion: reduce) {

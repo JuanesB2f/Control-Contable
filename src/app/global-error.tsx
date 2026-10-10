@@ -17,8 +17,8 @@ export default function GlobalError({ error, retry }: { error: Error & { digest?
           display: "grid",
           placeItems: "center",
           fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif",
-          background: "#f2f2f5",
-          color: "#1d1d1f",
+          background: "#f4f9f4",
+          color: "#1c241d",
         }}
       >
         <title>Algo salió mal</title>
@@ -31,7 +31,7 @@ export default function GlobalError({ error, retry }: { error: Error & { digest?
             type="button"
             onClick={retry}
             style={{
-              background: "#0071e3",
+              background: "#2e7d32",
               color: "#fff",
               border: 0,
               borderRadius: 12,

@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
 
 import { NoAccess } from "@/components/feedback/no-access"
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -9,12 +10,23 @@ import { InvitationsList } from "@/modules/access/components/invitations-list"
 import { InviteMemberDialog } from "@/modules/access/components/invite-member-dialog"
 import { MembersList } from "@/modules/access/components/members-list"
 import { ROLE_DESCRIPTIONS, ROLE_LABELS, type AppRole } from "@/modules/access/domain/permissions"
+import { SettingsSectionSkeleton } from "@/modules/settings/components/settings-section-skeleton"
 
 export const metadata: Metadata = { title: "Equipo" }
 
 const ROLES_IN_ORDER: AppRole[] = ["owner", "admin", "employee"]
 
-export default async function MembersPage({ params, searchParams }: PageProps<"/[orgSlug]/settings/members">) {
+type MembersPageProps = PageProps<"/[orgSlug]/settings/members">
+
+export default function MembersPage({ params, searchParams }: MembersPageProps) {
+  return (
+    <Suspense fallback={<SettingsSectionSkeleton />}>
+      <Members params={params} searchParams={searchParams} />
+    </Suspense>
+  )
+}
+
+async function Members({ params, searchParams }: Pick<MembersPageProps, "params" | "searchParams">) {
   const { orgSlug } = await params
   const context = await requireOrgContext(orgSlug)
 

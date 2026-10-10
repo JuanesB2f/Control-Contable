@@ -30,7 +30,10 @@ export function getPublicEnv(): PublicEnv {
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL || undefined,
   })
   if (!parsed.success) {
-    throw new Error(`Variables de entorno públicas inválidas: ${formatIssues(parsed.error)}`)
+    throw new Error(
+      `Variables de entorno públicas inválidas: ${formatIssues(parsed.error)}. ` +
+        "Completa .env.local (usa .env.example como guía) y reinicia `npm run dev`.",
+    )
   }
   publicEnv = parsed.data
   return publicEnv

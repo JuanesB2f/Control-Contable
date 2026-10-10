@@ -1,5 +1,6 @@
 import { History } from "lucide-react"
 import type { Metadata } from "next"
+import { Suspense } from "react"
 
 import { EmptyState } from "@/components/feedback/empty-state"
 import { NoAccess } from "@/components/feedback/no-access"
@@ -9,16 +10,27 @@ import { cn } from "@/lib/utils"
 import { can, requireOrgContext } from "@/modules/access/application/org-context"
 import { getRecentActivity } from "@/modules/audit/application/queries"
 import type { AuditTone } from "@/modules/audit/domain/describe"
+import { SettingsSectionSkeleton } from "@/modules/settings/components/settings-section-skeleton"
 
 export const metadata: Metadata = { title: "Actividad" }
 
 const TONE_CLASSES: Record<AuditTone, string> = {
-  neutral: "bg-primary",
+  neutral: "bg-muted-foreground/50",
   positive: "bg-success",
   warning: "bg-warning",
 }
 
-export default async function ActivityPage({ params }: PageProps<"/[orgSlug]/settings/activity">) {
+type ActivityPageProps = PageProps<"/[orgSlug]/settings/activity">
+
+export default function ActivityPage({ params }: ActivityPageProps) {
+  return (
+    <Suspense fallback={<SettingsSectionSkeleton />}>
+      <Activity params={params} />
+    </Suspense>
+  )
+}
+
+async function Activity({ params }: Pick<ActivityPageProps, "params">) {
   const { orgSlug } = await params
   const context = await requireOrgContext(orgSlug)
 

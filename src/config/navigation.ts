@@ -1,16 +1,4 @@
-import {
-  Boxes,
-  FileText,
-  LayoutGrid,
-  Megaphone,
-  Package,
-  Settings,
-  ShoppingBag,
-  Sparkles,
-  Users,
-  Wallet,
-  type LucideIcon,
-} from "lucide-react"
+import { Boxes, LayoutGrid, Package, Settings, ShoppingBag, Users, Wallet, type LucideIcon } from "lucide-react"
 
 import type { Permission } from "@/modules/access/domain/permissions"
 
@@ -21,8 +9,6 @@ export type NavItem = {
   title: string
   icon: LucideIcon
   permission: Permission
-  /** `soon` items are visible in the sidebar to show the product roadmap, but not navigable. */
-  status: "available" | "soon"
   href: (slug: string) => string
   keywords?: string[]
   /** Shown in the mobile tab bar. */
@@ -30,8 +16,6 @@ export type NavItem = {
 }
 
 export type NavGroup = { id: string; label?: string; items: NavItem[] }
-
-const moduleHref = (segment: string) => (slug: string) => `/${slug}/${segment}`
 
 export const navigation: NavGroup[] = [
   {
@@ -42,7 +26,6 @@ export const navigation: NavGroup[] = [
         title: "Inicio",
         icon: LayoutGrid,
         permission: "dashboard.read",
-        status: "available",
         href: routes.org.dashboard,
         keywords: ["dashboard", "resumen", "inicio"],
         mobile: true,
@@ -53,26 +36,54 @@ export const navigation: NavGroup[] = [
     id: "operations",
     label: "Operación",
     items: [
-      { id: "sales", title: "Ventas", icon: ShoppingBag, permission: "sales.read", status: "soon", href: moduleHref("sales") },
-      { id: "customers", title: "Clientes", icon: Users, permission: "customers.read", status: "soon", href: moduleHref("customers") },
-      { id: "products", title: "Productos", icon: Package, permission: "products.read", status: "soon", href: moduleHref("products") },
-      { id: "inventory", title: "Inventario", icon: Boxes, permission: "inventory.read", status: "soon", href: moduleHref("inventory") },
+      {
+        id: "sales",
+        title: "Ventas",
+        icon: ShoppingBag,
+        permission: "sales.read",
+        href: routes.org.sales,
+        keywords: ["vender", "factura", "caja", "pos"],
+        mobile: true,
+      },
+      {
+        id: "customers",
+        title: "Clientes",
+        icon: Users,
+        permission: "customers.read",
+        href: routes.org.customers,
+        keywords: ["compradores", "contactos"],
+        mobile: true,
+      },
+      {
+        id: "products",
+        title: "Productos",
+        icon: Package,
+        permission: "products.read",
+        href: routes.org.products,
+        keywords: ["catálogo", "precios", "margen"],
+      },
+      {
+        id: "inventory",
+        title: "Inventario",
+        icon: Boxes,
+        permission: "inventory.read",
+        href: routes.org.inventory,
+        keywords: ["stock", "existencias", "compras"],
+      },
     ],
   },
   {
     id: "insights",
     label: "Análisis",
     items: [
-      { id: "finance", title: "Finanzas", icon: Wallet, permission: "finance.read", status: "soon", href: moduleHref("finance") },
-      { id: "intelligence", title: "Intelligence", icon: Sparkles, permission: "intelligence.read", status: "soon", href: moduleHref("intelligence") },
-      { id: "reports", title: "Reportes", icon: FileText, permission: "reports.read", status: "soon", href: moduleHref("reports") },
-    ],
-  },
-  {
-    id: "growth",
-    label: "Crecimiento",
-    items: [
-      { id: "social", title: "Social Hub", icon: Megaphone, permission: "social.manage", status: "soon", href: moduleHref("social") },
+      {
+        id: "finance",
+        title: "Finanzas",
+        icon: Wallet,
+        permission: "finance.read",
+        href: routes.org.finance,
+        keywords: ["gastos", "ganancias", "utilidad", "flujo de caja"],
+      },
     ],
   },
 ]
@@ -82,10 +93,8 @@ export const settingsNavItem: NavItem = {
   title: "Configuración",
   icon: Settings,
   permission: "dashboard.read",
-  status: "available",
   href: routes.org.settings,
   keywords: ["ajustes", "preferencias", "negocio"],
-  mobile: true,
 }
 
 export type SettingsSection = {

@@ -1,0 +1,15 @@
+node_modules
+.next
+out
+coverage
+.git
+.vercel
+.env*
+!.env.example
+*.tsbuildinfo
+next-env.d.ts
+supabase/.temp
+Dockerfile
+docker-compose.yml
+.dockerignore
+npm-debug.log*

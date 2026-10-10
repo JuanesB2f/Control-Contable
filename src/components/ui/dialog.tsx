@@ -61,7 +61,7 @@ function DialogContent({
       <DialogPrimitive.Content
         data-slot="dialog-content"
         className={cn(
-          "fixed top-1/2 left-1/2 z-50 grid w-full max-w-[calc(100%-2rem)] -translate-x-1/2 -translate-y-1/2 gap-4 rounded-2xl bg-popover p-5 shadow-2xl text-sm text-popover-foreground ring-1 ring-foreground/10 duration-100 outline-none sm:max-w-sm data-open:animate-in data-open:fade-in-0 data-open:zoom-in-95 data-closed:animate-out data-closed:fade-out-0 data-closed:zoom-out-95",
+          "fixed inset-x-0 bottom-0 z-50 grid max-h-[92dvh] w-full gap-4 overflow-y-auto rounded-t-[28px] bg-card p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-sm text-card-foreground shadow-2xl ring-1 ring-foreground/10 duration-250 ease-out outline-none data-open:animate-in data-open:fade-in-0 data-open:slide-in-from-bottom data-closed:animate-out data-closed:fade-out-0 data-closed:slide-out-to-bottom sm:inset-0 sm:m-auto sm:h-fit sm:max-w-sm sm:rounded-3xl sm:duration-150 sm:data-open:slide-in-from-bottom-4 sm:data-open:zoom-in-95 sm:data-closed:slide-out-to-bottom-4 sm:data-closed:zoom-out-95",
           className
         )}
         {...props}
@@ -107,7 +107,7 @@ function DialogFooter({
     <div
       data-slot="dialog-footer"
       className={cn(
-        "-mx-5 -mb-5 flex flex-col-reverse gap-2 rounded-b-2xl border-t bg-muted/50 px-5 py-4 sm:flex-row sm:justify-end",
+        "sticky bottom-0 -mx-5 -mb-5 flex flex-col-reverse gap-2 border-t bg-card px-5 pt-4 pb-[max(1rem,env(safe-area-inset-bottom))] sm:static sm:flex-row sm:justify-end sm:rounded-b-3xl sm:bg-muted/50 sm:pb-4",
         className
       )}
       {...props}

@@ -3,13 +3,13 @@ import { cn } from "@/lib/utils"
 import { initialsOf } from "./user-avatar"
 
 const PALETTE = [
-  "from-[#5ac8fa] to-[#007aff]",
-  "from-[#34c759] to-[#248a3d]",
-  "from-[#ff9f0a] to-[#ff6b00]",
-  "from-[#af52de] to-[#8944ab]",
-  "from-[#ff375f] to-[#d70039]",
-  "from-[#64d2ff] to-[#30b0c7]",
-  "from-[#ffd60a] to-[#ff9f0a]",
+  "from-[#4caf50] to-[#2e7d32]",
+  "from-[#66bb6a] to-[#388e3c]",
+  "from-[#2e7d32] to-[#1b5e20]",
+  "from-[#81c784] to-[#43a047]",
+  "from-[#26a69a] to-[#00796b]",
+  "from-[#9ccc65] to-[#558b2f]",
+  "from-[#fbc02d] to-[#f9a825]",
 ] as const
 
 function paletteFor(seed: string) {

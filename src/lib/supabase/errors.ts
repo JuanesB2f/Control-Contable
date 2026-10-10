@@ -21,6 +21,32 @@ const businessHintMessages: Record<string, { code: ActionErrorCode; message: str
   cannot_change_self: { code: "business_rule", message: "No puedes modificar tu propio acceso." },
   cannot_change_owner: { code: "forbidden", message: "El propietario del negocio no se puede modificar." },
   member_not_found: { code: "not_found", message: "Ese miembro ya no pertenece al equipo." },
+  product_not_found: { code: "not_found", message: "Ese producto no existe o está desactivado." },
+  customer_not_found: { code: "not_found", message: "Ese cliente ya no existe." },
+  sale_not_found: { code: "not_found", message: "Esa venta no existe." },
+  empty_sale: { code: "validation", message: "Agrega al menos un producto a la venta." },
+  invalid_sale_item: { code: "validation", message: "Revisa las cantidades y precios de la venta." },
+  invalid_discount: { code: "validation", message: "El descuento no puede ser mayor que el subtotal." },
+  invalid_quantity: { code: "validation", message: "La cantidad no es válida." },
+  invalid_movement: { code: "validation", message: "Revisa la cantidad y el costo del movimiento." },
+  invalid_image: { code: "validation", message: "La foto no corresponde a ese producto." },
+  invalid_payment: { code: "validation", message: "Revisa el valor del pago." },
+  payment_exceeds_balance: { code: "business_rule", message: "El abono es mayor que lo que falta por pagar." },
+  credit_requires_customer: { code: "business_rule", message: "Elige el cliente para dejarle el saldo pendiente." },
+  bank_required: { code: "validation", message: "Elige el banco de la transferencia." },
+  sale_voided: { code: "business_rule", message: "Esa venta está anulada y no recibe pagos." },
+  payment_not_found: { code: "not_found", message: "Ese pago no existe." },
+  receipt_exists: { code: "conflict", message: "Ese pago ya tiene comprobante." },
+  invalid_receipt: { code: "validation", message: "El comprobante no corresponde a esa venta." },
+  invalid_due_date: { code: "validation", message: "La fecha de pago no puede ser anterior a hoy." },
+  sale_settled: { code: "business_rule", message: "Esa venta ya no tiene saldo pendiente." },
+}
+
+/** Stock errors name the product (sent in DETAIL) so the user knows which line to fix. */
+function insufficientStockMessage(error: PostgrestError) {
+  return error.hint === "insufficient_stock"
+    ? fail("business_rule", `No hay suficientes unidades de ${error.details || "un producto"}.`)
+    : null
 }
 
 export function isUniqueViolation(error: PostgrestError) {
@@ -28,6 +54,8 @@ export function isUniqueViolation(error: PostgrestError) {
 }
 
 export function mapDatabaseError(error: PostgrestError) {
+  const stockError = insufficientStockMessage(error)
+  if (stockError) return stockError
   if (error.hint && businessHintMessages[error.hint]) {
     const { code, message } = businessHintMessages[error.hint]
     return fail(code, message)

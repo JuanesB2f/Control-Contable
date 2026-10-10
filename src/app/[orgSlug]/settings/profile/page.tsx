@@ -1,14 +1,24 @@
 import type { Metadata } from "next"
+import { Suspense } from "react"
 
 import { UserAvatar } from "@/components/data/user-avatar"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ProfileForm } from "@/modules/account/components/profile-form"
 import { requireUser } from "@/modules/access/application/session"
 import { UpdatePasswordForm } from "@/modules/auth/components/update-password-form"
+import { SettingsSectionSkeleton } from "@/modules/settings/components/settings-section-skeleton"
 
 export const metadata: Metadata = { title: "Tu perfil" }
 
-export default async function ProfilePage() {
+export default function ProfilePage() {
+  return (
+    <Suspense fallback={<SettingsSectionSkeleton />}>
+      <Profile />
+    </Suspense>
+  )
+}
+
+async function Profile() {
   const user = await requireUser()
   const displayName = user.fullName ?? user.email
 

@@ -1,11 +1,24 @@
 "use client"
 
-import { Building2, LogOut, Monitor, Moon, Plus, Sun, UserPlus, type LucideIcon } from "lucide-react"
+import {
+  Building2,
+  LogOut,
+  Monitor,
+  Moon,
+  PackagePlus,
+  Plus,
+  ShoppingCart,
+  Sun,
+  UserPlus,
+  UserRoundPlus,
+  type LucideIcon,
+} from "lucide-react"
 import { useTheme } from "next-themes"
 import { useRouter } from "next/navigation"
 import { Fragment, createContext, useContext, useEffect, useState, useTransition } from "react"
 
 import {
+  Command,
   CommandDialog,
   CommandEmpty,
   CommandGroup,
@@ -78,7 +91,7 @@ function PaletteContent({ close }: { close: () => void }) {
   const go = (href: string) => () => router.push(href)
 
   const pages: PaletteEntry[] = [...navigation.flatMap((group) => group.items), settingsNavItem]
-    .filter((item) => item.status === "available" && can(item.permission))
+    .filter((item) => can(item.permission))
     .map((item) => ({ id: item.id, label: item.title, icon: item.icon, keywords: item.keywords, run: go(item.href(slug)) }))
 
   const settingsPages: PaletteEntry[] = settingsSections
@@ -92,6 +105,15 @@ function PaletteContent({ close }: { close: () => void }) {
     }))
 
   const actions: PaletteEntry[] = [
+    ...(can("sales.create")
+      ? [{ id: "new-sale", label: "Nueva venta", icon: ShoppingCart, keywords: ["vender", "cobrar", "factura"], run: go(`${routes.org.sales(slug)}?new=1`) }]
+      : []),
+    ...(can("products.write")
+      ? [{ id: "new-product", label: "Nuevo producto", icon: PackagePlus, keywords: ["catálogo", "precio", "costo"], run: go(`${routes.org.products(slug)}?new=1`) }]
+      : []),
+    ...(can("customers.write")
+      ? [{ id: "new-customer", label: "Nuevo cliente", icon: UserRoundPlus, keywords: ["comprador", "contacto"], run: go(`${routes.org.customers(slug)}?new=1`) }]
+      : []),
     ...(can("members.manage")
       ? [{ id: "invite", label: "Invitar a un miembro", icon: UserPlus, keywords: ["equipo", "empleado"], run: go(`${routes.org.members(slug)}?invite=1`) }]
       : []),
@@ -122,7 +144,7 @@ function PaletteContent({ close }: { close: () => void }) {
   ].filter((group) => group.entries.length > 0)
 
   return (
-    <>
+    <Command className="bg-transparent">
       <CommandInput placeholder="¿Qué quieres hacer?" />
       <CommandList className="max-h-[min(420px,60vh)]">
         <CommandEmpty>No encontramos resultados.</CommandEmpty>
@@ -147,6 +169,6 @@ function PaletteContent({ close }: { close: () => void }) {
           </Fragment>
         ))}
       </CommandList>
-    </>
+    </Command>
   )
 }
