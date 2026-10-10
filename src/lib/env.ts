@@ -45,7 +45,7 @@ export function getServerEnv(): ServerEnv {
   const parsed = serverEnvSchema.safeParse({
     RESEND_API_KEY: process.env.RESEND_API_KEY || undefined,
     EMAIL_FROM: process.env.EMAIL_FROM || undefined,
-  })
+  })  
   if (!parsed.success) {
     throw new Error(`Variables de entorno de servidor inválidas: ${formatIssues(parsed.error)}`)
   }
