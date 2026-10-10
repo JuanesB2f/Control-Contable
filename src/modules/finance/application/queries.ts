@@ -6,15 +6,16 @@ import { localDateKey, type ResolvedPeriod } from "@/modules/analytics/domain/pe
 
 import { getFinanceSummary, listExpenses } from "../infrastructure/repository"
 
-export async function getFinanceOverview(context: OrgContext, period: ResolvedPeriod) {
+export async function getFinanceReport(context: OrgContext, period: ResolvedPeriod) {
+  const supabase = await createSupabaseServerClient()
+  return getFinanceSummary(supabase, context.organization.id, period)
+}
+
+export async function getExpenses(context: OrgContext, period: ResolvedPeriod) {
   const supabase = await createSupabaseServerClient()
   const { id: organizationId, timezone } = context.organization
-  const [summary, expenses] = await Promise.all([
-    getFinanceSummary(supabase, organizationId, period),
-    listExpenses(supabase, organizationId, {
-      fromDate: localDateKey(period.from, timezone),
-      toDate: localDateKey(period.to, timezone),
-    }),
-  ])
-  return { summary, expenses }
+  return listExpenses(supabase, organizationId, {
+    fromDate: localDateKey(period.from, timezone),
+    toDate: localDateKey(period.to, timezone),
+  })
 }

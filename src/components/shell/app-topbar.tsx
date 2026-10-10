@@ -14,6 +14,11 @@ import { useCommandPalette } from "./command-palette"
 
 const subscribeToNothing = () => () => {}
 
+function subscribeToScroll(onChange: () => void) {
+  window.addEventListener("scroll", onChange, { passive: true })
+  return () => window.removeEventListener("scroll", onChange)
+}
+
 function useSectionTitle() {
   const pathname = usePathname()
   const { organization } = useOrg()
@@ -33,9 +38,17 @@ export function AppTopbar({ notifications }: { notifications: React.ReactNode })
     () => /Mac|iPhone|iPad/.test(navigator.userAgent),
     () => false,
   )
+  const scrolled = useSyncExternalStore(
+    subscribeToScroll,
+    () => window.scrollY > 4,
+    () => false,
+  )
 
   return (
-    <header className="glass sticky top-0 z-20 flex h-13 shrink-0 items-center gap-2 border-b border-border/60 px-4 md:rounded-t-xl">
+    <header
+      data-scrolled={scrolled || undefined}
+      className="sticky top-0 z-20 flex h-13 shrink-0 items-center gap-2 border-b border-transparent bg-background px-4 transition-[border-color] data-scrolled:border-border/60 md:glass md:rounded-t-xl md:border-border/60"
+    >
       <SidebarTrigger className="-ml-1 text-muted-foreground max-md:hidden" />
       <Separator orientation="vertical" className="mr-1 data-[orientation=vertical]:h-4 max-md:hidden" />
       <p className="truncate text-[17px] font-semibold tracking-tight md:text-sm md:font-medium md:tracking-normal">{title}</p>

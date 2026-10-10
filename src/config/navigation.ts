@@ -1,4 +1,4 @@
-import { Boxes, LayoutGrid, Package, Settings, ShoppingBag, Users, Wallet, type LucideIcon } from "lucide-react"
+import { Boxes, LayoutGrid, Package, ReceiptText, Settings, ShoppingBag, Users, type LucideIcon } from "lucide-react"
 
 import type { Permission } from "@/modules/access/domain/permissions"
 
@@ -23,11 +23,11 @@ export const navigation: NavGroup[] = [
     items: [
       {
         id: "dashboard",
-        title: "Inicio",
+        title: "Dashboard",
         icon: LayoutGrid,
         permission: "dashboard.read",
         href: routes.org.dashboard,
-        keywords: ["dashboard", "resumen", "inicio"],
+        keywords: ["inicio", "resumen", "estadísticas", "gráficas", "finanzas", "ganancias"],
         mobile: true,
       },
     ],
@@ -70,19 +70,13 @@ export const navigation: NavGroup[] = [
         href: routes.org.inventory,
         keywords: ["stock", "existencias", "compras"],
       },
-    ],
-  },
-  {
-    id: "insights",
-    label: "Análisis",
-    items: [
       {
         id: "finance",
-        title: "Finanzas",
-        icon: Wallet,
+        title: "Gastos",
+        icon: ReceiptText,
         permission: "finance.read",
         href: routes.org.finance,
-        keywords: ["gastos", "ganancias", "utilidad", "flujo de caja"],
+        keywords: ["arriendo", "servicios", "pagos", "egresos"],
       },
     ],
   },

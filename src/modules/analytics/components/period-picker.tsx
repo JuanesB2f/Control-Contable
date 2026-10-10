@@ -4,14 +4,21 @@ import { cn } from "@/lib/utils"
 
 import { PERIOD_KEYS, PERIODS, type PeriodKey } from "../domain/period"
 
+type PeriodPickerProps = {
+  basePath: string
+  current: PeriodKey
+  /** Other search params to keep when switching, e.g. the dashboard view. */
+  params?: Record<string, string>
+}
+
 /** Segmented period switcher backed by the `?period=` search param, so every view is linkable. */
-export function PeriodPicker({ basePath, current }: { basePath: string; current: PeriodKey }) {
+export function PeriodPicker({ basePath, current, params }: PeriodPickerProps) {
   return (
     <nav aria-label="Periodo" className="glass-card flex w-full rounded-2xl p-1 sm:inline-flex sm:w-auto">
       {PERIOD_KEYS.map((key) => (
         <Link
           key={key}
-          href={`${basePath}?period=${key}`}
+          href={`${basePath}?${new URLSearchParams({ ...params, period: key })}`}
           scroll={false}
           aria-current={key === current ? "page" : undefined}
           className={cn(

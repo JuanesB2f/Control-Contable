@@ -204,12 +204,12 @@
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
   }
+}
 
-  .glass {
-    background: var(--glass-strong);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-  }
+@utility glass {
+  background: var(--glass-strong);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
 }
 
 /* macOS/iOS frosted card: translucent fill, top highlight, hairline and soft shadow. */

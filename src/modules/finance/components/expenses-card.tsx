@@ -57,12 +57,16 @@ export function ExpensesCard({ expenses, today }: { expenses: Expense[]; today: 
     <Card className="gap-0 pb-0">
       <CardHeader className="pb-4">
         <CardTitle className="text-[15px] font-semibold">Gastos del negocio</CardTitle>
-        <CardDescription>Lo que pagaste para operar en este periodo.</CardDescription>
+        <CardDescription>
+          {expenses.length > 0
+            ? `${expenses.length} ${expenses.length === 1 ? "gasto" : "gastos"} · ${format.money(expenses.reduce((sum, expense) => sum + expense.amount, 0))}`
+            : "Lo que pagaste para operar en este periodo."}
+        </CardDescription>
         {canWrite ? (
           <CardAction>
             <Button size="sm" onClick={() => setFormOpen(true)}>
               <Plus data-icon="inline-start" />
-              Gasto
+              Agregar gasto
             </Button>
           </CardAction>
         ) : null}
@@ -76,7 +80,7 @@ export function ExpensesCard({ expenses, today }: { expenses: Expense[]; today: 
           className="border-t"
         />
       ) : (
-        <ul className="max-h-105 divide-y divide-border/70 overflow-y-auto border-t">
+        <ul className="divide-y divide-border/70 border-t">
           {expenses.map((expense) => {
             const Icon = EXPENSE_CATEGORY_ICONS[expense.category]
             return (

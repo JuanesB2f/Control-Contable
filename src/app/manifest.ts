@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next"
 
+import { THEME_COLORS } from "@/components/theme/theme-options"
 import { siteConfig } from "@/config/site"
 
 export default function manifest(): MetadataRoute.Manifest {
@@ -11,8 +12,8 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     display: "standalone",
     orientation: "portrait",
-    background_color: "#f4f9f4",
-    theme_color: "#f4f9f4",
+    background_color: THEME_COLORS.light,
+    theme_color: THEME_COLORS.light,
     icons: [
       { src: "/icon.svg", sizes: "any", type: "image/svg+xml" },
       { src: "/apple-icon", sizes: "180x180", type: "image/png" },

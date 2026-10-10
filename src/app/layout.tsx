@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Geist_Mono, Inter } from "next/font/google"
 
+import { THEME_COLORS } from "@/components/theme/theme-options"
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
@@ -29,10 +30,7 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f4f9f4" },
-    { media: "(prefers-color-scheme: dark)", color: "#0d110d" },
-  ],
+  themeColor: THEME_COLORS.light,
 }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

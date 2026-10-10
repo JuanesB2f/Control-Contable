@@ -59,7 +59,7 @@ export function MoreSheet({ open, onOpenChange }: { open: boolean; onOpenChange:
           {sections.length > 0 ? (
             <section>
               <SectionTitle>Secciones</SectionTitle>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-2">
                 {sections.map((item) => {
                   const href = item.href(organization.slug)
                   const active = pathname === href || pathname.startsWith(`${href}/`)
@@ -70,13 +70,13 @@ export function MoreSheet({ open, onOpenChange }: { open: boolean; onOpenChange:
                       onClick={close}
                       aria-current={active ? "page" : undefined}
                       className={cn(
-                        "flex flex-col items-center gap-2 rounded-2xl bg-muted/60 px-2 py-3.5 text-[13px] font-medium transition-transform active:scale-95",
+                        "flex min-w-0 items-center gap-3 rounded-2xl bg-muted/60 p-2.5 text-[15px] font-medium transition-transform active:scale-95",
                         active && "bg-primary/10 text-primary",
                       )}
                     >
                       <span
                         className={cn(
-                          "flex size-10 items-center justify-center rounded-xl bg-background text-primary shadow-sm",
+                          "flex size-9 shrink-0 items-center justify-center rounded-xl bg-background text-primary shadow-sm",
                           active && "bg-primary text-primary-foreground",
                         )}
                       >
