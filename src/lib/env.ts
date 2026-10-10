@@ -32,7 +32,8 @@ export function getPublicEnv(): PublicEnv {
   if (!parsed.success) {
     throw new Error(
       `Variables de entorno públicas inválidas: ${formatIssues(parsed.error)}. ` +
-        "Completa .env.local (usa .env.example como guía) y reinicia `npm run dev`.",
+        "En local completa .env.local (usa .env.example como guía) y reinicia `npm run dev`; " +
+        "en Vercel agrégalas en Settings › Environment Variables y vuelve a desplegar.",
     )
   }
   publicEnv = parsed.data
