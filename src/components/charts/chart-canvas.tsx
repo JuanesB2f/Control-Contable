@@ -53,14 +53,14 @@ export type ChartTheme = {
 const CHART_THEMES: Record<"light" | "dark", ChartTheme> = {
   light: {
     series: ["#2e7d32", "#81c784", "#fbc02d", "#1b5e20", "#a5b8a7"],
-    text: "#66706a",
+    text: "#414b43",
     grid: "rgba(20, 60, 25, 0.08)",
     tooltipBackground: "rgba(28, 36, 29, 0.92)",
     tooltipText: "#ffffff",
   },
   dark: {
     series: ["#66bb6a", "#a5d6a7", "#fbc02d", "#43a047", "#7d8a7f"],
-    text: "#9aa69c",
+    text: "#b9c4bb",
     grid: "rgba(255, 255, 255, 0.08)",
     tooltipBackground: "rgba(242, 246, 242, 0.95)",
     tooltipText: "#121612",
@@ -110,7 +110,7 @@ export function cartesianScales(theme: ChartTheme, formatTick: (value: number) =
   }
 }
 
-export function tooltipStyle(theme: ChartTheme, formatValue: (value: number) => string) {
+export function tooltipStyle<TType extends ChartType>(theme: ChartTheme, formatValue: (value: number) => string) {
   return {
     backgroundColor: theme.tooltipBackground,
     titleColor: theme.tooltipText,
@@ -121,8 +121,8 @@ export function tooltipStyle(theme: ChartTheme, formatValue: (value: number) => 
     boxPadding: 4,
     usePointStyle: true,
     callbacks: {
-      label: (item: TooltipItem<ChartType>) =>
-        ` ${item.dataset.label ?? item.label}: ${formatValue(typeof item.raw === "number" ? item.raw : 0)}`,
+      label: (item: TooltipItem<TType>) =>
+        ` ${item.chart.data.datasets[item.datasetIndex]?.label ?? item.label}: ${formatValue(typeof item.raw === "number" ? item.raw : 0)}`,
     },
   }
 }

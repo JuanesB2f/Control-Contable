@@ -18,7 +18,7 @@ export default function GlobalError({ error, retry }: { error: Error & { digest?
           placeItems: "center",
           fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Inter, sans-serif",
           background: "#f4f9f4",
-          color: "#1c241d",
+          color: "#0d130e",
         }}
       >
         <title>Algo salió mal</title>

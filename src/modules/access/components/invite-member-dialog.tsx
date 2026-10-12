@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { Check, Copy, MailCheck, UserPlus } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { useState, useTransition } from "react"
-import { Controller, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 import { FormTextField } from "@/components/forms/form-text-field"
@@ -19,15 +19,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { FieldError, FieldGroup, FieldLegend, FieldSet } from "@/components/ui/field"
+import { FieldGroup } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { applyActionError } from "@/lib/forms"
-import { cn } from "@/lib/utils"
 
 import { inviteMember } from "../application/actions"
-import { ASSIGNABLE_ROLES, ROLE_DESCRIPTIONS, ROLE_LABELS } from "../domain/permissions"
 import { inviteMemberSchema, type InviteMemberInput } from "../domain/schemas"
 import { useOrg } from "./org-provider"
+import { RoleField } from "./role-field"
 
 type SentInvitation = { email: string; inviteUrl: string; emailSent: boolean }
 
@@ -109,7 +108,7 @@ export function InviteMemberDialog({ defaultOpen = false }: { defaultOpen?: bool
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>
-        <Button size="sm" className="h-8">
+        <Button size="sm" variant="outline" className="h-8">
           <UserPlus data-icon="inline-start" />
           Invitar
         </Button>
@@ -140,41 +139,7 @@ export function InviteMemberDialog({ defaultOpen = false }: { defaultOpen?: bool
                 placeholder="nombre@correo.com"
                 autoFocus
               />
-              <Controller
-                control={form.control}
-                name="role"
-                render={({ field, fieldState }) => (
-                  <FieldSet data-invalid={fieldState.invalid} className="gap-2">
-                    <FieldLegend variant="label">Rol</FieldLegend>
-                    <div className="grid gap-2">
-                      {ASSIGNABLE_ROLES.map((role) => (
-                        <label
-                          key={role}
-                          className={cn(
-                            "flex cursor-pointer gap-3 rounded-xl border bg-card px-3.5 py-3 transition-colors hover:bg-muted/50",
-                            field.value === role && "border-primary bg-primary/5 ring-1 ring-primary hover:bg-primary/5",
-                          )}
-                        >
-                          <input
-                            type="radio"
-                            name={field.name}
-                            value={role}
-                            checked={field.value === role}
-                            onChange={() => field.onChange(role)}
-                            onBlur={field.onBlur}
-                            className="mt-0.5 size-4 accent-primary"
-                          />
-                          <span className="grid gap-0.5">
-                            <span className="text-sm font-medium">{ROLE_LABELS[role]}</span>
-                            <span className="text-[13px] text-muted-foreground">{ROLE_DESCRIPTIONS[role]}</span>
-                          </span>
-                        </label>
-                      ))}
-                    </div>
-                    {fieldState.invalid ? <FieldError errors={[fieldState.error]} /> : null}
-                  </FieldSet>
-                )}
-              />
+              <RoleField control={form.control} name="role" />
             </FieldGroup>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>

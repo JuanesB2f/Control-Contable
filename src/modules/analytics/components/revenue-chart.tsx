@@ -52,7 +52,7 @@ export function RevenueChart({ data, showProfit }: { data: RevenuePoint[]; showP
         scales: cartesianScales(theme, format.compact),
         plugins: {
           legend: showProfit ? legendStyle(theme) : { display: false },
-          tooltip: tooltipStyle(theme, format.money),
+          tooltip: tooltipStyle<"line">(theme, format.money),
         },
       },
     }),

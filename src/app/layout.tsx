@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next"
 import { Geist_Mono, Inter } from "next/font/google"
 
+import { PwaSetup } from "@/components/pwa/pwa-setup"
 import { THEME_COLORS } from "@/components/theme/theme-options"
 import { ThemeProvider } from "@/components/theme/theme-provider"
 import { Toaster } from "@/components/ui/sonner"
@@ -38,6 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html lang="es" suppressHydrationWarning className={`${inter.variable} ${geistMono.variable} h-full`}>
       <body className="min-h-full">
         <ThemeProvider>
+          <PwaSetup />
           <TooltipProvider delayDuration={400}>
             {children}
             <Toaster position="top-center" />

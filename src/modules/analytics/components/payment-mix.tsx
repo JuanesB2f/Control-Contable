@@ -33,7 +33,7 @@ export function PaymentMix({ methods }: { methods: SalesAnalytics["paymentMethod
       },
       options: {
         cutout: "72%",
-        plugins: { legend: { display: false }, tooltip: tooltipStyle(theme, format.money) },
+        plugins: { legend: { display: false }, tooltip: tooltipStyle<"doughnut">(theme, format.money) },
       },
     }),
     [methods, theme, format],

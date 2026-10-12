@@ -753,6 +753,16 @@ export type Database = {
           token: string
         }[]
       }
+      create_member_account: {
+        Args: {
+          p_email: string
+          p_full_name: string
+          p_organization_id: string
+          p_password: string
+          p_role: Database["public"]["Enums"]["app_role"]
+        }
+        Returns: string
+      }
       create_organization: {
         Args: {
           p_business_type?: string

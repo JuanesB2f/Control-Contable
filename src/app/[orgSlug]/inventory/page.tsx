@@ -27,7 +27,7 @@ export default function InventoryPage({ params }: PageProps<"/[orgSlug]/inventor
 async function Inventory({ params }: Pick<PageProps<"/[orgSlug]/inventory">, "params">) {
   const { orgSlug } = await params
   const context = await requireOrgContext(orgSlug)
-  const description = "Registra compras, ajusta conteos y revisa cada movimiento."
+  const description = "Cuántas unidades tienes: registra compras, ajusta conteos y revisa cada movimiento."
 
   if (!can(context, "inventory.read")) {
     return (

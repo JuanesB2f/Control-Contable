@@ -31,6 +31,14 @@ describe("describeAuditEntry", () => {
     expect(result.summary).toBe("Ana actualizó nombre, moneda del negocio")
   })
 
+  it("describes accounts created by an admin", () => {
+    const result = describeAuditEntry(
+      entry({ action: "member.account_created", metadata: { full_name: "Laura Gómez", email: "laura@correo.com", role: "employee" } }),
+      names,
+    )
+    expect(result).toEqual({ summary: "Ana creó la cuenta de Laura Gómez como Empleado", tone: "positive" })
+  })
+
   it("flags removals as warnings", () => {
     expect(describeAuditEntry(entry({ action: "member.removed", entityId: "u-2" }), names).tone).toBe("warning")
   })

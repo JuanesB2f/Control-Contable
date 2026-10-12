@@ -24,7 +24,7 @@ export default function ProductsPage({ params, searchParams }: ProductsPageProps
 async function Products({ params, searchParams }: Pick<ProductsPageProps, "params" | "searchParams">) {
   const { orgSlug } = await params
   const context = await requireOrgContext(orgSlug)
-  const header = <PageHeader title="Productos" description="Tu catálogo: precios, costos, fotos y stock mínimo." />
+  const header = <PageHeader title="Productos" description="Tu catálogo: foto, precio, costo y margen. Las unidades las manejas en Inventario." />
 
   if (!can(context, "products.read")) {
     return (

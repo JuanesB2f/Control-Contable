@@ -6,6 +6,7 @@ import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/comp
 import { formatDate } from "@/lib/dates"
 import { can, requireOrgContext } from "@/modules/access/application/org-context"
 import { getTeam } from "@/modules/access/application/queries"
+import { CreateMemberDialog } from "@/modules/access/components/create-member-dialog"
 import { InvitationsList } from "@/modules/access/components/invitations-list"
 import { InviteMemberDialog } from "@/modules/access/components/invite-member-dialog"
 import { MembersList } from "@/modules/access/components/members-list"
@@ -55,8 +56,9 @@ async function Members({ params, searchParams }: Pick<MembersPageProps, "params"
             {members.length === 1 ? "1 persona" : `${members.length} personas`} con acceso a {context.organization.name}
           </CardDescription>
           {team.canManage ? (
-            <CardAction>
+            <CardAction className="flex gap-2">
               <InviteMemberDialog key={String(invite === "1")} defaultOpen={invite === "1"} />
+              <CreateMemberDialog />
             </CardAction>
           ) : null}
         </CardHeader>

@@ -13,19 +13,11 @@ import { useOrgFormat } from "@/hooks/use-org-format"
 import { matchesSearch } from "@/lib/search"
 import { cn } from "@/lib/utils"
 import { useCan } from "@/modules/access/components/org-provider"
-import { STOCK_STATUS_LABELS, stockStatus } from "@/modules/inventory/domain/stock"
-
 import { marginRatio } from "../domain/pricing"
 import type { Product } from "../domain/types"
 import { MarginBadge } from "./margin-badge"
 import { ProductFormDialog } from "./product-form-dialog"
 import { ProductImage } from "./product-image"
-
-const STOCK_TONE = {
-  out: "bg-destructive/10 text-destructive",
-  low: "bg-warning/15 text-warning",
-  ok: "bg-muted text-muted-foreground",
-} as const
 
 type DialogState = { open: false } | { open: true; product: Product | null }
 
@@ -129,7 +121,6 @@ export function ProductsView({ products, openNew }: { products: Product[]; openN
         ) : (
           <ul className="divide-y divide-border/70">
             {visible.map((product) => {
-              const status = stockStatus(product.stock, product.minStock)
               const margin = product.costPrice === null ? null : marginRatio(product.costPrice, product.salePrice)
               const content = (
                 <>
@@ -140,7 +131,6 @@ export function ProductsView({ products, openNew }: { products: Product[]; openN
                     </p>
                     <p className="truncate text-xs text-muted-foreground">
                       {[product.category, product.sku].filter(Boolean).join(" · ") || "Sin categoría"}
-                      {product.unitsSold30d > 0 ? ` · ${format.number(product.unitsSold30d)} vendidos en 30 días` : ""}
                     </p>
                   </div>
                   <div className="hidden shrink-0 text-right sm:block">
@@ -149,17 +139,9 @@ export function ProductsView({ products, openNew }: { products: Product[]; openN
                       <p className="text-xs text-muted-foreground tabular-nums">Costo {format.money(product.costPrice)}</p>
                     ) : null}
                   </div>
-                  <div className="flex shrink-0 flex-col items-end gap-1 sm:w-28">
+                  <div className="flex shrink-0 flex-col items-end gap-1 sm:w-24">
                     <span className="text-sm font-semibold tabular-nums sm:hidden">{format.money(product.salePrice)}</span>
-                    <div className="flex items-center gap-1.5">
-                      {margin !== null ? <MarginBadge ratio={margin} label={format.percent(margin)} /> : null}
-                      <span
-                        className={cn("rounded-full px-2 py-0.5 text-xs font-medium tabular-nums", STOCK_TONE[status])}
-                        title={STOCK_STATUS_LABELS[status]}
-                      >
-                        {status === "out" ? "Agotado" : `${format.number(product.stock)} u.`}
-                      </span>
-                    </div>
+                    {margin !== null ? <MarginBadge ratio={margin} label={format.percent(margin)} /> : null}
                   </div>
                   {canWrite ? <ChevronRight className="size-4 shrink-0 text-muted-foreground" /> : null}
                 </>

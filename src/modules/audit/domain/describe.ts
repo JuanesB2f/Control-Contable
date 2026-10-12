@@ -82,6 +82,11 @@ export function describeAuditEntry(
         summary: `${actor} invitó a ${text(metadata.email) ?? "una persona"} como ${roleLabel(metadata.role)}`,
         tone: "neutral",
       }
+    case "member.account_created":
+      return {
+        summary: `${actor} creó la cuenta de ${text(metadata.full_name) ?? text(metadata.email) ?? "una persona"} como ${roleLabel(metadata.role)}`,
+        tone: "positive",
+      }
     case "member.invitation_revoked":
       return { summary: `${actor} revocó la invitación de ${text(metadata.email) ?? "una persona"}`, tone: "warning" }
     case "member.joined":

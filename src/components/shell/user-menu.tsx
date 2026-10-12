@@ -1,6 +1,6 @@
 "use client"
 
-import { ChevronsUpDown, LogOut, Sun, UserRound } from "lucide-react"
+import { ChevronsUpDown, Download, LogOut, Sun, UserRound } from "lucide-react"
 import { useTheme } from "next-themes"
 import Link from "next/link"
 import { useTransition } from "react"
@@ -20,6 +20,7 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { useInstallFlow } from "@/components/pwa/use-install-flow"
 import { THEME_OPTIONS } from "@/components/theme/theme-options"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
 import { routes } from "@/config/routes"
@@ -31,6 +32,7 @@ export function UserMenu() {
   const { isMobile, setOpenMobile } = useSidebar()
   const { theme, setTheme } = useTheme()
   const [pending, startTransition] = useTransition()
+  const install = useInstallFlow()
   const displayName = user.fullName ?? user.email
 
   return (
@@ -84,6 +86,12 @@ export function UserMenu() {
                   </DropdownMenuRadioGroup>
                 </DropdownMenuSubContent>
               </DropdownMenuSub>
+              {install.available ? (
+                <DropdownMenuItem onSelect={() => void install.start()}>
+                  <Download />
+                  Instalar app
+                </DropdownMenuItem>
+              ) : null}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem
@@ -98,6 +106,7 @@ export function UserMenu() {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        {install.dialog}
       </SidebarMenuItem>
     </SidebarMenu>
   )

@@ -11,11 +11,13 @@ import { mapDatabaseError } from "@/lib/supabase/errors"
 import { createSupabaseServerClient } from "@/lib/supabase/server"
 
 import {
+  createMemberAccountSchema,
   invitationIdSchema,
   invitationTokenSchema,
   inviteMemberSchema,
   memberIdSchema,
   updateMemberRoleSchema,
+  type CreateMemberAccountInput,
   type InviteMemberInput,
   type UpdateMemberRoleInput,
 } from "../domain/schemas"
@@ -59,6 +61,30 @@ export async function inviteMember(
 
   revalidateMembers(orgSlug)
   return ok({ inviteUrl, emailSent })
+}
+
+export async function createMemberAccount(orgSlug: string, input: CreateMemberAccountInput): Promise<ActionResult> {
+  const auth = await authorizeOrgAction(orgSlug, "members.manage")
+  if (!auth.ok) return auth
+
+  const parsed = createMemberAccountSchema.safeParse(input)
+  if (!parsed.success) return failValidation(parsed.error)
+
+  const { error } = await auth.supabase.rpc("create_member_account", {
+    p_organization_id: auth.context.organization.id,
+    p_email: parsed.data.email,
+    p_password: parsed.data.password,
+    p_full_name: parsed.data.fullName,
+    p_role: parsed.data.role,
+  })
+  if (error?.hint === "email_taken") {
+    const message = "Ese correo ya tiene una cuenta. Invítalo para que entre con su propia contraseña."
+    return fail("conflict", message, { email: message })
+  }
+  if (error) return mapDatabaseError(error)
+
+  revalidateMembers(orgSlug)
+  return ok()
 }
 
 export async function revokeInvitation(orgSlug: string, invitationId: string): Promise<ActionResult> {

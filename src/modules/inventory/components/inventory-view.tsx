@@ -21,7 +21,7 @@ import { useOrgFormat } from "@/hooks/use-org-format"
 import { matchesSearch } from "@/lib/search"
 import { cn } from "@/lib/utils"
 import { useCan, useOrg } from "@/modules/access/components/org-provider"
-import { ProductPhotoButton } from "@/modules/products/components/product-photo-button"
+import { ProductImage } from "@/modules/products/components/product-image"
 import type { Product } from "@/modules/products/domain/types"
 
 import { STOCK_STATUS_LABELS, coverageDays, stockStatus, type StockStatus } from "../domain/stock"
@@ -109,7 +109,7 @@ export function InventoryView({ products }: { products: Product[] }) {
               const scale = Math.max(product.minStock * 3, product.stock, 1)
               return (
                 <li key={product.id} className="flex items-center gap-3 px-4 py-3.5 sm:px-5">
-                  <ProductPhotoButton product={product} className="size-12 sm:size-14" />
+                  <ProductImage name={product.name} url={product.imageUrl} className="size-12 sm:size-14" sizes="56px" />
                   <div className="min-w-0 flex-1 space-y-2">
                     <div className="flex items-baseline justify-between gap-3">
                       <p className="truncate text-sm font-medium">{product.name}</p>

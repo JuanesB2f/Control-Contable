@@ -1,6 +1,6 @@
 "use client"
 
-import { Check, ChevronRight, LogOut, Plus } from "lucide-react"
+import { Check, ChevronRight, Download, LogOut, Plus } from "lucide-react"
 import { useTheme } from "next-themes"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
@@ -8,6 +8,7 @@ import { useTransition } from "react"
 
 import { OrgAvatar } from "@/components/data/org-avatar"
 import { UserAvatar } from "@/components/data/user-avatar"
+import { useInstallFlow } from "@/components/pwa/use-install-flow"
 import { THEME_OPTIONS } from "@/components/theme/theme-options"
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
 import { navigation, settingsNavItem } from "@/config/navigation"
@@ -28,6 +29,7 @@ export function MoreSheet({ open, onOpenChange }: { open: boolean; onOpenChange:
   const can = useCan()
   const { theme, setTheme } = useTheme()
   const [signingOut, startSignOut] = useTransition()
+  const install = useInstallFlow()
   const displayName = user.fullName ?? user.email
   const close = () => onOpenChange(false)
 
@@ -145,6 +147,25 @@ export function MoreSheet({ open, onOpenChange }: { open: boolean; onOpenChange:
             </div>
           </section>
 
+          {install.available ? (
+            <button
+              type="button"
+              onClick={() => {
+                close()
+                void install.start()
+              }}
+              className="flex items-center gap-3 rounded-2xl bg-primary/10 p-3 text-left transition-transform active:scale-[0.98]"
+            >
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+                <Download className="size-5" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[15px] font-semibold text-primary">Instalar app</span>
+                <span className="block text-[13px] text-muted-foreground">Ábrela desde tu pantalla de inicio, a pantalla completa</span>
+              </span>
+            </button>
+          ) : null}
+
           <button
             type="button"
             disabled={signingOut}
@@ -156,6 +177,7 @@ export function MoreSheet({ open, onOpenChange }: { open: boolean; onOpenChange:
           </button>
         </div>
       </DrawerContent>
+      {install.dialog}
     </Drawer>
   )
 }

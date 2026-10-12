@@ -1,6 +1,6 @@
 import { z } from "zod"
 
-import { emailSchema } from "@/modules/auth/domain/schemas"
+import { emailSchema, passwordSchema } from "@/modules/auth/domain/schemas"
 
 import { ASSIGNABLE_ROLES } from "./permissions"
 
@@ -11,6 +11,14 @@ export const inviteMemberSchema = z.object({
   role: roleSchema,
 })
 export type InviteMemberInput = z.infer<typeof inviteMemberSchema>
+
+export const createMemberAccountSchema = z.object({
+  fullName: z.string().trim().min(2, "Escribe su nombre.").max(120, "Máximo 120 caracteres."),
+  email: emailSchema,
+  password: passwordSchema,
+  role: roleSchema,
+})
+export type CreateMemberAccountInput = z.infer<typeof createMemberAccountSchema>
 
 export const updateMemberRoleSchema = z.object({
   userId: z.uuid(),

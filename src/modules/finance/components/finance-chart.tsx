@@ -14,7 +14,7 @@ export function FinanceChart({ data }: { data: FinancePoint[] }) {
 
   const config = useMemo<ChartSpec<"bar">>(() => {
     const bar = { borderRadius: 6, borderSkipped: false, maxBarThickness: 22, categoryPercentage: 0.7, barPercentage: 0.9 } as const
-    const tooltip = tooltipStyle(theme, format.money)
+    const tooltip = tooltipStyle<"bar">(theme, format.money)
     return {
       type: "bar",
       data: {
